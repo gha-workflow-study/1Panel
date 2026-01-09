@@ -24,6 +24,8 @@ func ErrorWithDetail(ctx *gin.Context, code int, msgKey string, err error) {
 	res := dto.Response{
 		Code:    code,
 		Message: "",
+		LogZH:   ctx.GetString("1panel_zh_log"),
+		LogEN:   ctx.GetString("1panel_en_log"),
 	}
 	res.Message = i18n.GetMsgWithDetail(msgKey, err.Error())
 	ctx.JSON(http.StatusOK, res)
@@ -43,8 +45,10 @@ func SuccessWithData(ctx *gin.Context, data interface{}) {
 		data = gin.H{}
 	}
 	res := dto.Response{
-		Code: http.StatusOK,
-		Data: data,
+		Code:  http.StatusOK,
+		Data:  data,
+		LogZH: ctx.GetString("1panel_zh_log"),
+		LogEN: ctx.GetString("1panel_en_log"),
 	}
 	ctx.JSON(http.StatusOK, res)
 	ctx.Abort()
@@ -65,8 +69,10 @@ func SuccessWithDataGzipped(ctx *gin.Context, data interface{}) {
 		data = gin.H{}
 	}
 	res := dto.Response{
-		Code: http.StatusOK,
-		Data: data,
+		Code:  http.StatusOK,
+		Data:  data,
+		LogZH: ctx.GetString("1panel_zh_log"),
+		LogEN: ctx.GetString("1panel_en_log"),
 	}
 	jsonBytes, err := json.Marshal(res)
 	if err != nil {
@@ -87,9 +93,13 @@ func SuccessWithDataGzipped(ctx *gin.Context, data interface{}) {
 }
 
 func Success(ctx *gin.Context) {
+	fmt.Println(ctx.GetString("1panel_zh_log"))
+	fmt.Println(ctx.GetString("1panel_en_log"))
 	res := dto.Response{
 		Code:    http.StatusOK,
 		Message: "success",
+		LogZH:   ctx.GetString("1panel_zh_log"),
+		LogEN:   ctx.GetString("1panel_en_log"),
 	}
 	ctx.JSON(http.StatusOK, res)
 	ctx.Abort()
@@ -99,6 +109,8 @@ func SuccessWithMsg(ctx *gin.Context, msg string) {
 	res := dto.Response{
 		Code:    http.StatusOK,
 		Message: msg,
+		LogZH:   ctx.GetString("1panel_zh_log"),
+		LogEN:   ctx.GetString("1panel_en_log"),
 	}
 	ctx.JSON(http.StatusOK, res)
 	ctx.Abort()
